@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #FFFDF7;
+    --foreground: #1a1a1a;
+    --primary: #E8634A;
+    --accent: #E8634A;
+    --font-display-current: var(--font-display-creative);
+    --font-body-current: var(--font-serif-creative);
+    --radius: 0.5rem;
+  }
+
+  [data-mode="developer"] {
+    --background: #0D1117;
+    --foreground: #f0f6fc;
+    --primary: #58A6FF;
+    --accent: #58A6FF;
+    --font-display-current: var(--font-display-dev);
+    --font-body-current: var(--font-mono-dev);
+  }
+
+  body {
+    @apply bg-background text-foreground transition-colors duration-500 antialiased;
+    font-family: var(--font-body-current);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display-current);
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10;
+  }
+  
+  .text-stroke {
+    -webkit-text-stroke: 1px currentColor;
+    color: transparent;
+  }
+
+  .text-stroke-primary {
+    -webkit-text-stroke: 1px var(--primary);
+    color: transparent;
+  }
+}
