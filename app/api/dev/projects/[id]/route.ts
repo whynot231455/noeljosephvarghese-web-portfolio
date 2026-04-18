@@ -21,12 +21,26 @@ export async function DELETE(
     const fileContents = await fs.readFile(dataFilePath, 'utf8');
     const projects = projectStorageSchema.array().parse(JSON.parse(fileContents));
     
-    const filteredProjects = projects.filter((p) => p.id !== id);
-    
-    if (projects.length === filteredProjects.length) {
+    const projectToDelete = projects.find((p) => p.id === id);
+    if (!projectToDelete) {
       return NextResponse.json({ error: 'Project not found' }, { status: 404 });
     }
-    
+
+    // Attempt to delete image if it's a local path
+    if (projectToDelete.coverImage && projectToDelete.coverImage.startsWith('/projects/')) {
+      const publicProjectsDir = path.join(process.cwd(), 'public', 'projects');
+      const fileName = path.basename(projectToDelete.coverImage);
+      const filePath = path.join(publicProjectsDir, fileName);
+
+      try {
+        await fs.unlink(filePath);
+        console.log(`Deleted associated image: ${filePath}`);
+      } catch (err) {
+        console.error(`Failed to delete image file: ${filePath}`, err);
+      }
+    }
+
+    const filteredProjects = projects.filter((p) => p.id !== id);
     await fs.writeFile(dataFilePath, JSON.stringify(filteredProjects, null, 2), 'utf8');
     
     return NextResponse.json({ success: true });

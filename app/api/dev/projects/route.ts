@@ -21,10 +21,6 @@ export async function GET(request: Request) {
   const auth = verifyDevAuth(request);
   if (!auth.authorized) return auth.response;
 
-  if (process.env.NODE_ENV !== 'development' && !process.env.DEV_API_PASSWORD) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
   try {
     const projects = await readProjects();
     return NextResponse.json(projects);
@@ -37,10 +33,6 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   const auth = verifyDevAuth(request);
   if (!auth.authorized) return auth.response;
-
-  if (process.env.NODE_ENV !== 'development' && !process.env.DEV_API_PASSWORD) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
 
   try {
     const { project: newProject } = normalizeProjectDraft(await request.json());
@@ -65,10 +57,6 @@ export async function POST(request: Request) {
 export async function PUT(request: Request) {
   const auth = verifyDevAuth(request);
   if (!auth.authorized) return auth.response;
-
-  if (process.env.NODE_ENV !== 'development' && !process.env.DEV_API_PASSWORD) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
 
   try {
     const { project: updatedProject, oldId } = normalizeProjectDraft(await request.json());
@@ -107,13 +95,10 @@ export async function PUT(request: Request) {
 }
 
 // DELETE: Remove project and associated image
+// NOTE: Deprecated in favor of DELETE /api/dev/projects/[id]
 export async function DELETE(request: Request) {
   const auth = verifyDevAuth(request);
   if (!auth.authorized) return auth.response;
-
-  if (process.env.NODE_ENV !== 'development' && !process.env.DEV_API_PASSWORD) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
 
   try {
     const { id } = await request.json();

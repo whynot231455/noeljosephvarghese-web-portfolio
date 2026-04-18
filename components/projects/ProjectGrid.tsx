@@ -13,7 +13,12 @@ import type { ProjectRecord } from "@/lib/projects";
 export const ProjectGrid = () => {
   const { mode } = useMode();
   const isCreative = mode === "creative";
+
+  // Logic Fix: Ensure categories match the projectCategories defined in lib/projects.ts
+  // Creative: 'uiux', 'photo', 'video'
+  // Developer: 'dev', 'software'
   const categoriesToShow = isCreative ? ["uiux", "photo", "video"] : ["dev", "software"];
+
   const filteredProjects = (projectsData as ProjectRecord[]).filter(
     (project) => categoriesToShow.includes(project.category) && project.featured
   );
