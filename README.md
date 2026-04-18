@@ -1,6 +1,6 @@
 # 🎨⌨️ Personal Portfolio Website
 
-> A dual-identity portfolio for the creative and the coder — built with Next.js 14, Tailwind CSS, and Framer Motion.
+> A dual-identity portfolio for the creative and the coder — built with Next.js 16, Tailwind CSS, and Framer Motion.
 
 ---
 
@@ -19,16 +19,15 @@ The centrepiece is an animated **Creative ↔ Developer toggle** on the Home Pag
 
 | Layer | Technology | Purpose |
 |-------|------------|---------|
-| Framework | Next.js 14 (App Router) | Routing, SSR/SSG, image optimisation |
+| Framework | Next.js 16 (App Router) | Routing, SSR/SSG, image optimisation |
 | Language | TypeScript | Type safety across all components |
 | Styling | Tailwind CSS | Utility-first, theme-aware styling |
 | Animation | Framer Motion | Toggle morph & page transitions |
 | UI Components | shadcn/ui + Lucide React | Accessible components & icons |
-| Media | Cloudinary (free tier) | Image & video hosting |
-| Video | React Player | Render video editing showreels |
+| Media | Cloudinary | Image hosting & upload for projects |
+| Music | Spotify API | Fetch and display personal playlists |
 | Forms | React Hook Form + Zod | Form state & validation |
-| Email | Resend (free tier) | Contact form email delivery |
-| CMS (optional) | Notion API or Sanity.io | Edit projects without code changes |
+| Email | Resend (free tier) | Contact email delivery |
 | Deployment | Vercel | CI/CD, edge functions, analytics |
 
 ---
@@ -36,47 +35,63 @@ The centrepiece is an animated **Creative ↔ Developer toggle** on the Home Pag
 ## 📁 Project Structure
 
 ```
-portfolio/
+web-portfolio/
 ├── app/
-│   ├── page.tsx                  ← Home Page (toggle lives here)
-│   ├── about/
-│   │   └── page.tsx
-│   ├── projects/
-│   │   ├── page.tsx              ← Projects grid
-│   │   └── [slug]/
-│   │       └── page.tsx          ← Project detail
-│   └── contact/
-│       └── page.tsx
+│   ├── page.tsx                  ← Home Page (toggle, hero, projects, skills, contact)
+│   ├── layout.tsx
+│   ├── globals.css
+│   ├── robots.ts
+│   ├── sitemap.ts
+│   ├── dev/
+│   │   ├── layout.tsx            ← Dev admin layout
+│   │   └── projects/
+│   │       └── new/
+│   │           └── page.tsx      ← Add / edit project (admin)
+│   └── api/
+│       ├── spotify/
+│       │   └── playlists/
+│       │       └── route.ts      ← Spotify playlists endpoint
+│       └── dev/
+│           ├── projects/
+│           │   ├── route.ts      ← CRUD project data
+│           │   └── [id]/
+│           │       └── route.ts  ← Single project operations
+│           └── upload/
+│               └── route.ts      ← Image upload endpoint
 │
 ├── components/
 │   ├── home/
 │   │   ├── CreativeHero.tsx
 │   │   ├── DeveloperHero.tsx
 │   │   ├── ModeToggle.tsx
-│   │   └── ExperienceTimeline.tsx
+│   │   ├── FluidShapes.tsx
+│   │   └── Skills.tsx
 │   ├── projects/
 │   │   ├── ProjectCard.tsx
-│   │   └── FilterBar.tsx
-│   ├── about/
-│   │   └── SkillGrid.tsx
-│   ├── contact/
-│   │   └── ContactForm.tsx
+│   │   └── ProjectGrid.tsx
+│   ├── dev/
+│   │   └── ProjectSidebar.tsx
+│   ├── spotify/
+│   │   └── SpotifyPlaylists.tsx
 │   └── shared/
 │       ├── Navbar.tsx
-│       └── Footer.tsx
+│       ├── MatrixBackground.tsx
+│       ├── TerminalWindow.tsx
+│       ├── SegmentedText.tsx
+│       └── SegmentedCharacter.tsx
 │
 ├── lib/
+│   ├── ModeContext.tsx            ← Creative / Developer mode state
+│   ├── projects.ts                ← Project schema & helpers
+│   ├── auth.ts                    ← Dev API password auth
 │   ├── utils.ts
-│   └── api.ts                    ← Notion/Sanity helpers (optional)
+│   └── character-map.ts
 │
 ├── content/
-│   ├── projects.json             ← Project data
-│   └── experience.json           ← Work experience data
+│   └── projects.json              ← Project data
 │
-├── public/                       ← Static assets
-├── styles/
-│   └── globals.css
-├── next.config.js
+├── public/                        ← Static assets & uploaded project images
+├── next.config.mjs
 ├── tailwind.config.ts
 └── tsconfig.json
 ```
@@ -86,7 +101,7 @@ portfolio/
 ## 📄 Pages
 
 ### `/` — Home Page
-The flagship page. Features a **dual-mode hero** controlled by an animated toggle:
+The single-page experience. Features a **dual-mode hero** controlled by an animated toggle:
 
 | Property | Creative Mode | Developer Mode |
 |----------|--------------|----------------|
@@ -96,50 +111,23 @@ The flagship page. Features a **dual-mode hero** controlled by an animated toggl
 | Layout Feel | Editorial, fluid, imagery-led | Terminal-style, grid-lines, code |
 | CTA Label | "See My Creative Work" | "View My Projects" |
 
-**Sections (both modes):**
-- Hero with animated name & subtitle
+**Sections:**
+- Hero with animated name & subtitle (switches between `CreativeHero` and `DeveloperHero`)
 - Mode Toggle (sticky, persists to `localStorage`)
-- About Snapshot (2–3 sentences + link)
-- Work Experience Timeline
-- Featured Projects Strip (auto-filters by active mode)
+- Projects Grid (auto-filters by active mode)
 - Skills Grid
-- Footer
+- Spotify Playlists
+- Contact section (inline — email link + social links)
 
 ---
 
-### `/about` — About Me
-- Full bio (3–4 paragraphs)
-- Two-column skills: **Creative Tools** | **Dev Tools**
-- Detailed experience timeline with roles, dates, and bullet points
-- Education & certifications block
-- Downloadable resume (PDF, opens new tab)
+### `/dev/projects/new` — Admin: Add / Edit Project
+Password-protected admin UI for managing portfolio projects without touching code directly.
 
----
-
-### `/projects` — Projects
-- Filter Bar: **All | Creative | Developer**
-- Masonry / CSS Grid responsive layout
-- Each card: cover image/video, title, category badge, tech tags, CTA link
-
-**Project Detail** `/projects/[slug]`:
-- Hero image/video
-- Full description + process notes + outcomes
-- Tools used
-- Prev / Next project navigation
-
----
-
-### `/contact` — Contact
-- Social links row (LinkedIn, GitHub, Dribbble, Instagram, Email)
-- Collaboration form with fields:
-  - Name (required)
-  - Email (required, validated)
-  - Subject (dropdown: UI/UX | Photo | Video | Dev | Other)
-  - Message (required, min 20 chars)
-  - Budget range (optional)
-- Submit via Next.js Server Action → Resend email
-- Toast notification on success/error
-- Spam protection: honeypot field + rate limiting (3 per IP/hour)
+- Add a new project (title, category, summary, description, tags, cover image, URLs)
+- Edit or delete existing projects via the sidebar
+- Cover image upload via the `/api/dev/upload` endpoint
+- Requires the `DEV_API_PASSWORD` environment variable
 
 ---
 
@@ -177,27 +165,16 @@ Accessibility:  all animations disabled when prefers-reduced-motion
 interface Project {
   id: string;               // URL-safe slug
   title: string;
-  category: 'uiux' | 'photo' | 'video' | 'dev';
-  summary: string;          // One-line description
-  description: string;      // Full markdown body
-  coverImage: string;       // Cloudinary URL
-  tags: string[];           // Tools / technologies
-  liveUrl?: string;
-  repoUrl?: string;
-  featured?: boolean;       // Show on Home page strip
+  category: 'dev' | 'software' | 'uiux' | 'photo' | 'video';
+  summary: string;          // One-line description (max 240 chars)
+  description: string;      // Full markdown body (max 4000 chars)
+  coverImage: string;       // Path to uploaded asset (e.g. /projects/my-image.png)
+  tags: string[];           // Tools / technologies (1–12 items)
+  featured: boolean;        // Show on Home page grid
   publishedAt: string;      // YYYY-MM-DD
-}
-```
-
-### Work Experience
-```typescript
-interface Experience {
-  company: string;
-  role: string;
-  startDate: string;        // YYYY-MM
-  endDate: string;          // YYYY-MM or 'Present'
-  description: string[];    // Bullet points
-  type: 'creative' | 'dev' | 'both';
+  repoUrl?: string;
+  figmaUrl?: string;
+  liveUrl?: string;
 }
 ```
 
@@ -207,15 +184,15 @@ interface Experience {
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/your-username/portfolio.git
-cd portfolio
+git clone https://github.com/whynot231455/web-portfolio.git
+cd web-portfolio
 
 # 2. Install dependencies
 npm install
 
 # 3. Set up environment variables
 cp .env.example .env.local
-# Fill in: RESEND_API_KEY, CLOUDINARY_URL, NOTION_SECRET (optional)
+# Fill in the required variables (see section below)
 
 # 4. Run development server
 npm run dev
@@ -229,21 +206,21 @@ npm run dev
 ```env
 # Email (Resend)
 RESEND_API_KEY=re_xxxxxxxxxxxx
-RESEND_FROM_EMAIL=hello@yourdomain.com
 
-# Cloudinary
+# Cloudinary (image uploads)
 NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloud_name
 CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
 
-# CMS — Notion (optional)
-NOTION_SECRET=secret_xxxxxxxxxx
-NOTION_PROJECTS_DB_ID=xxxxxxxxxx
-NOTION_EXPERIENCE_DB_ID=xxxxxxxxxx
+# Spotify (playlists section)
+SPOTIFY_CLIENT_ID=your_client_id
+SPOTIFY_CLIENT_SECRET=your_client_secret
+SPOTIFY_REFRESH_TOKEN=your_refresh_token
+# Comma-separated list of playlist IDs or URLs to display (leave empty to show all)
+SPOTIFY_ALLOWED_PLAYLIST_IDS=
 
-# CMS — Sanity (optional alternative)
-NEXT_PUBLIC_SANITY_PROJECT_ID=xxxxxxxxxx
-NEXT_PUBLIC_SANITY_DATASET=production
+# Dev Admin (protects /dev routes and /api/dev/* endpoints)
+DEV_API_PASSWORD=your_dev_password
 ```
 
 ---
@@ -273,15 +250,15 @@ vercel --prod
 |-------|-------------|-----------|
 | 1 — Setup | Repo, Next.js scaffold, Tailwind config, Vercel deploy | 1 day |
 | 2 — Design Tokens | Theme files, CSS variables, fonts for both modes | 0.5 day |
-| 3 — Shared Components | Navbar, Footer, ProjectCard, layout wrappers | 1 day |
-| 4 — Home Page | CreativeHero, DeveloperHero, ModeToggle, timeline | 2 days |
-| 5 — About Page | Bio, skills grid, timeline, resume download | 1 day |
-| 6 — Projects Page | Grid, FilterBar, [slug] detail page | 1.5 days |
-| 7 — Contact Page | Form, validation, Resend integration | 1 day |
+| 3 — Shared Components | Navbar, ModeToggle, layout wrappers | 1 day |
+| 4 — Home Page | CreativeHero, DeveloperHero, ModeToggle, ProjectGrid, Skills | 2 days |
+| 5 — Spotify Section | Spotify API integration, playlist cards | 1 day |
+| 6 — Contact Section | Inline contact section with email link | 0.5 day |
+| 7 — Dev Admin | /dev/projects/new, project CRUD API, image upload | 1.5 days |
 | 8 — Content | Projects data, copy, images via Cloudinary | 1 day |
 | 9 — QA & Polish | Lighthouse audit, a11y review, cross-browser testing | 1 day |
 | 10 — Launch | Custom domain, production deploy, analytics | 0.5 day |
-| **Total** | | **~11 days** |
+| **Total** | | **~10 days** |
 
 ---
 
@@ -310,4 +287,4 @@ MIT — feel free to use this as a base for your own portfolio.
 
 ---
 
-*Built with Next.js 14 · Deployed on Vercel · Designed for humans*
+*Built with Next.js 16 · Deployed on Vercel · Designed for humans*
