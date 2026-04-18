@@ -18,11 +18,6 @@ export async function POST(request: Request) {
   const auth = verifyDevAuth(request);
   if (!auth.authorized) return auth.response;
 
-  // Still keep development check but allow override via password if needed
-  if (process.env.NODE_ENV !== 'development' && !process.env.DEV_API_PASSWORD) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
   try {
     const formData = await request.formData();
     const file = formData.get('file') as File | null;
