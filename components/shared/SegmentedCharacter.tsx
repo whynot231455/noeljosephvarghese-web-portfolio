@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+
 import { motion } from "framer-motion";
 import { CHARACTER_MAP } from "@/lib/character-map";
 import { cn } from "@/lib/utils";

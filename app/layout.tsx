@@ -1,17 +1,41 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Cormorant_Garamond, JetBrains_Mono, Space_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { ModeProvider } from "@/lib/ModeContext";
-
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
-const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-display-creative" });
-const cormorant = Cormorant_Garamond({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"], variable: "--font-serif-creative" });
-const jetbrains = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono-dev" });
-const spaceMono = Space_Mono({ subsets: ["latin"], weight: ["400", "700"], variable: "--font-display-dev" });
+import { MatrixBackground } from "@/components/shared/MatrixBackground";
+import { FluidShapes } from "@/components/home/FluidShapes";
 
 export const metadata: Metadata = {
-  title: "Noel Joseph Varghese | Designer & Developer",
-  description: "Personal portfolio of Noel Joseph Varghese.",
+  title: {
+    default: "Noel Joseph Varghese | Software Developer & Designer",
+    template: "%s | Noel Joseph Varghese",
+  },
+  description: "Portfolio of Noel Joseph Varghese. I am a passionate software developer and designer specializing in building modern web applications, creative interfaces, and robust systems.",
+  keywords: ["Noel Joseph Varghese", "Noel Varghese", "Software Developer", "Web Developer", "Frontend Developer", "Full Stack Developer", "Designer", "UX/UI", "React", "Next.js", "Portfolio"],
+  authors: [{ name: "Noel Joseph Varghese" }],
+  creator: "Noel Joseph Varghese",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    title: "Noel Joseph Varghese | Software Developer & Designer",
+    description: "Portfolio of Noel Joseph Varghese. I am a passionate software developer and designer.",
+    siteName: "Noel Joseph Varghese Portfolio",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Noel Joseph Varghese | Software Developer & Designer",
+    description: "Portfolio of Noel Joseph Varghese. I am a passionate software developer and designer.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({
@@ -21,8 +45,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${playfair.variable} ${cormorant.variable} ${jetbrains.variable} ${spaceMono.variable} antialiased`} suppressHydrationWarning>
+      <body suppressHydrationWarning>
         <ModeProvider>
+          <MatrixBackground />
+          <FluidShapes />
           {children}
         </ModeProvider>
       </body>

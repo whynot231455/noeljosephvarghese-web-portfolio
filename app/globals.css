@@ -8,8 +8,9 @@
     --foreground: #1a1a1a;
     --primary: #E8634A;
     --accent: #E8634A;
-    --font-display-current: var(--font-display-creative);
-    --font-body-current: var(--font-serif-creative);
+    --font-display-current: "Playfair Display", "Georgia", serif;
+    --font-body-current: "Cormorant Garamond", "Times New Roman", serif;
+    --font-mono-current: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
     --radius: 0.5rem;
   }
 
@@ -18,12 +19,18 @@
     --foreground: #f0f6fc;
     --primary: #58A6FF;
     --accent: #58A6FF;
-    --font-display-current: var(--font-display-dev);
-    --font-body-current: var(--font-mono-dev);
+    --font-display-current: "Space Mono", "SFMono-Regular", Consolas, monospace;
+    --font-body-current: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
   }
 
   body {
-    @apply bg-background text-foreground transition-colors duration-500 antialiased;
+    background-color: var(--background);
+    color: var(--foreground);
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 500ms;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     font-family: var(--font-body-current);
   }
 
@@ -34,7 +41,9 @@
 
 @layer components {
   .glass {
-    @apply bg-white/5 backdrop-blur-xl border border-white/10;
+    background-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
   
   .text-stroke {

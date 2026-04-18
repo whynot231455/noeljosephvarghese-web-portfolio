@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+
 import { SegmentedCharacter } from "./SegmentedCharacter";
 import { cn } from "@/lib/utils";
 

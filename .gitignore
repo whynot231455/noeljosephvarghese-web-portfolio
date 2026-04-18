@@ -8,3 +8,4 @@ out/
 *.log
 .env*
 !.env.example
+content/playlists.cache.json
