@@ -65,7 +65,7 @@ export function slugifyProjectId(input: string): string {
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
 
-  return slug || `project-${Date.now()}`;
+  return slug;
 }
 
 export function normalizeProjectDraft(raw: unknown): {
@@ -84,4 +84,21 @@ export function normalizeProjectDraft(raw: unknown): {
       tags: draft.tags.map((tag) => tag.trim()).filter(Boolean),
     },
   };
+}
+
+let writeLock = Promise.resolve();
+
+export async function withProjectLock<T>(fn: () => Promise<T>): Promise<T> {
+  const currentLock = writeLock;
+  let release: () => void;
+  writeLock = new Promise((resolve) => {
+    release = resolve as () => void;
+  });
+  
+  try {
+    await currentLock;
+    return await fn();
+  } finally {
+    release!();
+  }
 }

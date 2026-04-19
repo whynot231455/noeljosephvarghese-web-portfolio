@@ -27,10 +27,10 @@ export const ModeToggle = ({ className }: ModeToggleProps) => {
       >
         {/* Sliding Background Pill */}
         <motion.div
-          animate={{ x: mode === "creative" ? 0 : 106 }}
+          animate={{ x: mode === "developer" ? 0 : 106 }}
           className={cn(
             "absolute left-1 w-[106px] h-8 rounded-full z-0 shadow-lg transition-colors duration-500",
-            mode === "creative" ? "bg-primary" : "bg-primary"
+            mode === "developer" ? "bg-primary" : "bg-primary"
           )}
           transition={{ 
             type: "spring", 
@@ -42,21 +42,21 @@ export const ModeToggle = ({ className }: ModeToggleProps) => {
 
         <div className="flex w-full relative z-10 h-full">
           <div className="flex-1 flex items-center justify-center gap-1.5 truncate">
-            <Palette size={12} className={cn("transition-colors duration-500 shrink-0", mode === "creative" ? "text-white" : "text-foreground/40")} />
-            <span className={cn(
-              "text-[9px] font-bold uppercase tracking-[0.2em] transition-colors duration-500",
-              mode === "creative" ? "text-white" : "text-foreground/40"
-            )}>
-              Creative
-            </span>
-          </div>
-          <div className="flex-1 flex items-center justify-center gap-1.5 truncate">
             <Terminal size={12} className={cn("transition-colors duration-500 shrink-0", mode === "developer" ? "text-white" : "text-foreground/40")} />
             <span className={cn(
               "text-[9px] font-bold uppercase tracking-[0.2em] transition-colors duration-500",
               mode === "developer" ? "text-white" : "text-foreground/40"
             )}>
               Developer
+            </span>
+          </div>
+          <div className="flex-1 flex items-center justify-center gap-1.5 truncate">
+            <Palette size={12} className={cn("transition-colors duration-500 shrink-0", mode === "creative" ? "text-white" : "text-foreground/40")} />
+            <span className={cn(
+              "text-[9px] font-bold uppercase tracking-[0.2em] transition-colors duration-500",
+              mode === "creative" ? "text-white" : "text-foreground/40"
+            )}>
+              Creative
             </span>
           </div>
         </div>

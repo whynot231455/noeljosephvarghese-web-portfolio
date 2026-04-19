@@ -17,12 +17,12 @@ const MODE_CHANGE_EVENT = "portfolio-mode-change";
 
 function readMode(): Mode {
   if (typeof window === "undefined") {
-    return "creative";
+    return "developer";
   }
 
-  return localStorage.getItem(MODE_STORAGE_KEY) === "developer"
-    ? "developer"
-    : "creative";
+  return localStorage.getItem(MODE_STORAGE_KEY) === "creative"
+    ? "creative"
+    : "developer";
 }
 
 function subscribe(onStoreChange: () => void) {
@@ -55,7 +55,7 @@ function setStoredMode(mode: Mode) {
 }
 
 export function ModeProvider({ children }: { children: React.ReactNode }) {
-  const mode = useSyncExternalStore<Mode>(subscribe, readMode, () => "creative");
+  const mode = useSyncExternalStore<Mode>(subscribe, readMode, () => "developer");
   const [isTransitioning, setIsTransitioning] = React.useState(false);
 
   useEffect(() => {

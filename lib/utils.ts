@@ -20,7 +20,7 @@ export function sanitizeUrl(url: string | undefined): string {
 
   try {
     const parsed = new URL(trimmedUrl);
-    if (parsed.protocol === 'http:' || parsed.protocol === 'https:' || parsed.protocol === 'mailto:') {
+    if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
       return trimmedUrl;
     }
   } catch {

@@ -9,6 +9,7 @@ import { ProjectGrid } from "@/components/projects/ProjectGrid";
 import { SpotifyPlaylists } from "@/components/spotify/SpotifyPlaylists";
 import { Skills } from "@/components/home/Skills";
 import { useMode } from "@/lib/ModeContext";
+import { Footer } from "@/components/shared/Footer";
 
 export default function Home() {
   const { mode } = useMode();
@@ -24,6 +25,7 @@ export default function Home() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.6, ease: "easeInOut" }}
+          className="relative"
         >
           {mode === "creative" ? <CreativeHero /> : <DeveloperHero />}
         </motion.div>
@@ -58,9 +60,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="py-20 px-8 border-t border-white/10 text-center opacity-40 font-mono text-[10px] uppercase tracking-widest">
-        © 2026 Noel Joseph Varghese.
-      </footer>
+      <Footer />
     </main>
   );
 }

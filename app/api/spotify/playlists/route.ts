@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import { z } from 'zod';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -37,23 +38,14 @@ type NormalizedPlaylist = {
   trackCount: number;
 };
 
-// ─── In-Memory Cache ──────────────────────────────────────────────────────────
-// Lives for the lifetime of the server process. Refreshes after TTL expires.
-
-const CACHE_TTL_MS = 60 * 60 * 1000; // 60 minutes
-
-let memoryCache: {
-  data: NormalizedPlaylist[];
-  fetchedAt: number;
-} | null = null;
-
-/**
- * Resets the in-memory cache. 
- * Exported only for testing purposes to ensure test isolation.
- */
-export function _resetCache() {
-  memoryCache = null;
-}
+const normalizedPlaylistSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  image: z.string().nullable(),
+  description: z.string(),
+  url: z.string(),
+  trackCount: z.number(),
+});
 
 // ─── Disk Cache ───────────────────────────────────────────────────────────────
 // Written on every successful Spotify fetch. Read as fallback on API failure.
@@ -64,8 +56,10 @@ function readDiskCache(): NormalizedPlaylist[] | null {
   try {
     if (!fs.existsSync(DISK_CACHE_PATH)) return null;
     const raw = fs.readFileSync(DISK_CACHE_PATH, 'utf-8');
-    return JSON.parse(raw) as NormalizedPlaylist[];
-  } catch {
+    const parsed = JSON.parse(raw);
+    return normalizedPlaylistSchema.array().parse(parsed);
+  } catch (err) {
+    console.warn('[Spotify Cache] Disk cache invalid or missing:', err);
     return null;
   }
 }
@@ -123,12 +117,14 @@ async function getAccessToken(): Promise<string> {
       grant_type: 'refresh_token',
       refresh_token: refreshToken,
     }).toString(),
-    // No Next.js cache on auth — always fresh token
+    // Next.js handles token cache centrally if we wrap this in unstable_cache, but keeping it fresh here ensures the token works.
     cache: 'no-store',
   });
 
   if (!response.ok) {
-    const body = await response.text();
+    let body = await response.text();
+    // Sanitize any potential leakage of the refresh token in the response body log
+    body = body.split(refreshToken).join('[REDACTED]');
     console.error('[Spotify] Token refresh failed:', response.status, body);
     throw new Error(`Spotify token refresh failed (HTTP ${response.status})`);
   }
@@ -148,7 +144,8 @@ async function fetchFromSpotify(allowedIds: string[]): Promise<NormalizedPlaylis
   while (nextUrl) {
     const response = await fetch(nextUrl, {
       headers: { Authorization: `Bearer ${token}` },
-      cache: 'no-store',
+      // Use Next.js Data Cache for 1 hour to handle serverless caching globally
+      next: { revalidate: 3600 },
     });
 
     if (!response.ok) {
@@ -167,7 +164,6 @@ async function fetchFromSpotify(allowedIds: string[]): Promise<NormalizedPlaylis
     image: pl.images?.[0]?.url ?? null,
     description: pl.description?.trim() || 'No description available.',
     url: pl.external_urls?.spotify ?? pl.href ?? '',
-    // Spotify API structure varies slightly between endpoints, being robust here
     trackCount: typeof pl.tracks === 'number' 
       ? pl.tracks 
       : (pl.tracks?.total ?? pl.items?.total ?? pl.trackCount ?? 0),
@@ -179,57 +175,47 @@ async function fetchFromSpotify(allowedIds: string[]): Promise<NormalizedPlaylis
 // ─── Route Handler ────────────────────────────────────────────────────────────
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const forceRefresh = searchParams.get('refresh') === 'true' && process.env.NODE_ENV === 'development';
   const allowedIds = getAllowedPlaylistIds();
 
-  // [Layer 1] Serve from in-memory cache if still fresh and not forced
-  if (!forceRefresh && memoryCache && Date.now() - memoryCache.fetchedAt < CACHE_TTL_MS) {
-    console.log('[Spotify Cache] Serving from memory cache');
-    const items = applyAllowlist(memoryCache.data, allowedIds);
-    return NextResponse.json(
-      { items, total: items.length, source: 'memory-cache' },
-      { headers: { 'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=300' } }
-    );
-  }
-
-  // [Layer 2] Fetch from Spotify API
   try {
     const playlists = await fetchFromSpotify(allowedIds);
 
-    // Success — update both caches
-    memoryCache = { data: playlists, fetchedAt: Date.now() };
+    // Write to disk cache for local dev or build artifact fallback
     writeDiskCache(playlists);
 
-    console.log(`[Spotify Cache] Fetched ${playlists.length} playlists from Spotify API`);
+    console.log(`[Spotify Cache] Fetched ${playlists.length} playlists from Spotify API/Next.js Cache`);
 
     return NextResponse.json(
       { items: playlists, total: playlists.length, source: 'spotify-api' },
       { headers: { 'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=300' } }
     );
-  } catch (err) {
-    console.error('[Spotify] API fetch failed, falling back to disk cache:', err);
+  } catch (err: any) {
+    const sanitizeStr = (str: string) => {
+      const token = process.env.SPOTIFY_REFRESH_TOKEN;
+      return token ? str.split(token).join('[REDACTED]') : str;
+    };
+    const errorMessage = sanitizeStr(err?.message || 'Unknown error');
+    console.error('[Spotify] API fetch failed, falling back to disk cache:', errorMessage);
 
-    // [Layer 3] Serve stale disk cache as fallback
-    const cached = readDiskCache();
-    const filteredCached = cached ? applyAllowlist(cached, allowedIds) : [];
-    if (filteredCached.length > 0) {
-      console.log('[Spotify Cache] Serving from disk cache (stale fallback)');
+    return handleFallback(allowedIds, errorMessage);
+  }
+}
 
-      // Also repopulate memory cache from disk so next request is fast
-      memoryCache = { data: filteredCached, fetchedAt: Date.now() - CACHE_TTL_MS + 5 * 60 * 1000 };
+function handleFallback(allowedIds: string[], reason: string) {
+  const cached = readDiskCache();
+  const filteredCached = cached ? applyAllowlist(cached, allowedIds) : [];
+  if (filteredCached.length > 0) {
+    console.log('[Spotify Cache] Serving from disk cache (stale fallback)');
 
-      return NextResponse.json(
-        { items: filteredCached, total: filteredCached.length, source: 'disk-cache' },
-        { headers: { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=60' } }
-      );
-    }
-
-    // [Layer 3 miss] No cache at all — return empty, not an error
-    console.warn('[Spotify] No cache available. Returning empty.');
     return NextResponse.json(
-      { items: [], total: 0, source: 'none' },
-      { status: 200, headers: { 'Cache-Control': 'no-store' } }
+      { items: filteredCached, total: filteredCached.length, source: 'disk-cache' },
+      { headers: { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=60' } }
     );
   }
+
+  console.warn('[Spotify] No cache available. Returning empty.');
+  return NextResponse.json(
+    { items: [], total: 0, source: 'none' },
+    { status: 200, headers: { 'Cache-Control': 'no-store' } }
+  );
 }
