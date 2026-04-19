@@ -100,10 +100,7 @@ export const Navbar = () => {
                 href={link.href} 
                 onClick={() => setIsMenuOpen(false)}
                 style={{ color: mode === "creative" ? '#1a1a1a' : '#f0f6fc' }}
-                className={cn(
-                  "text-2xl font-display uppercase tracking-wider",
-                  mode === "creative" ? "" : ""
-                )}
+                className="text-2xl font-display uppercase tracking-wider"
               >
                 {link.name}
               </a>

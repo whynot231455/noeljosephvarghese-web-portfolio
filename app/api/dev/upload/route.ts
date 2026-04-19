@@ -103,7 +103,11 @@ export async function POST(request: Request) {
       await fs.mkdir(publicDir, { recursive: true });
     }
     
-    const filePath = path.join(publicDir, filename);
+    const filePath = path.resolve(publicDir, filename);
+    if (!filePath.startsWith(publicDir + path.sep)) {
+      return NextResponse.json({ error: 'Invalid path: Path traversal detected' }, { status: 400 });
+    }
+
     await fs.writeFile(filePath, buffer);
 
     // Return the path that the frontend can use to load the image

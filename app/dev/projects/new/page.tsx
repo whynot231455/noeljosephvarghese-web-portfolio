@@ -100,13 +100,11 @@ export default function NewProjectPage() {
 
   const handleDeleteProject = async (id: string) => {
     try {
-      const res = await fetch('/api/dev/projects', {
+      const res = await fetch(`/api/dev/projects/${id}`, {
         method: 'DELETE',
         headers: { 
-          'Content-Type': 'application/json',
           [DEV_AUTH_HEADER]: devPassword
-        },
-        body: JSON.stringify({ id })
+        }
       });
       const data = await res.json();
       if (data.success) {

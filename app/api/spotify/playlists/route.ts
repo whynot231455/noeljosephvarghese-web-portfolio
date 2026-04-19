@@ -183,7 +183,7 @@ export async function GET(request: Request) {
     // Write to disk cache for local dev or build artifact fallback
     writeDiskCache(playlists);
 
-    console.log(`[Spotify Cache] Fetched ${playlists.length} playlists from Spotify API/Next.js Cache`);
+
 
     return NextResponse.json(
       { items: playlists, total: playlists.length, source: 'spotify-api' },
@@ -205,7 +205,7 @@ function handleFallback(allowedIds: string[], reason: string) {
   const cached = readDiskCache();
   const filteredCached = cached ? applyAllowlist(cached, allowedIds) : [];
   if (filteredCached.length > 0) {
-    console.log('[Spotify Cache] Serving from disk cache (stale fallback)');
+
 
     return NextResponse.json(
       { items: filteredCached, total: filteredCached.length, source: 'disk-cache' },

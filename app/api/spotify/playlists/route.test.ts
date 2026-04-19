@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { GET, _resetCache } from './route';
+import { GET } from './route';
 import fs from 'fs';
 
 // Mock NextResponse.json
@@ -26,7 +26,7 @@ describe('Spotify Playlists API Route', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.unstubAllEnvs();
-    _resetCache();
+
     
     // Correct Environment Variables for the implementation
     process.env.SPOTIFY_CLIENT_ID = 'test-client-id';

@@ -38,7 +38,7 @@ export async function DELETE(
         }
 
         await fs.unlink(filePath);
-        console.log(`Deleted associated image: ${filePath}`);
+
       }
 
       const filteredProjects = projects.filter((p) => p.id !== id);
