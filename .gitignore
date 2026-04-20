@@ -9,3 +9,5 @@ out/
 .env*
 !.env.example
 content/playlists.cache.json
+
+.vercel

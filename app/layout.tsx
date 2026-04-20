@@ -3,6 +3,7 @@ import "./globals.css";
 import { ModeProvider } from "@/lib/ModeContext";
 import { MatrixBackground } from "@/components/shared/MatrixBackground";
 import { FluidShapes } from "@/components/home/FluidShapes";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: {
@@ -50,6 +51,7 @@ export default function RootLayout({
           <MatrixBackground />
           <FluidShapes />
           {children}
+          <Analytics />
         </ModeProvider>
       </body>
     </html>
