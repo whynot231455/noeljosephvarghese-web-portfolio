@@ -52,7 +52,7 @@ export default function Home() {
             </p>
             <a
               href="mailto:noeljosephvarghese@gmail.com"
-              className="text-4xl md:text-6xl font-display uppercase hover:text-primary transition-colors border-b-4 border-primary pb-2"
+              className="text-xl sm:text-2xl md:text-6xl font-display uppercase hover:text-primary transition-colors border-b-2 md:border-b-4 border-primary pb-1 md:pb-2 break-all"
             >
               noeljosephvarghese@gmail.com
             </a>

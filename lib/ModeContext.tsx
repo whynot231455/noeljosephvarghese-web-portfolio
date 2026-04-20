@@ -50,8 +50,10 @@ function subscribe(onStoreChange: () => void) {
 }
 
 function setStoredMode(mode: Mode) {
-  localStorage.setItem(MODE_STORAGE_KEY, mode);
-  window.dispatchEvent(new Event(MODE_CHANGE_EVENT));
+  if (typeof window !== "undefined") {
+    localStorage.setItem(MODE_STORAGE_KEY, mode);
+    window.dispatchEvent(new Event(MODE_CHANGE_EVENT));
+  }
 }
 
 export function ModeProvider({ children }: { children: React.ReactNode }) {

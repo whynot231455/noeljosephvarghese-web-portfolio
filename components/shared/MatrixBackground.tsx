@@ -64,14 +64,20 @@ export const MatrixBackground = () => {
     animate();
 
     const handleResize = () => {
+      cancelAnimationFrame(animationId);
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
       const newColumns = Math.floor(width / fontSize);
+
       if (newColumns > drops.length) {
           for (let i = drops.length; i < newColumns; i++) {
               drops[i] = Math.random() * -100;
           }
+      } else {
+          drops.length = newColumns;
       }
+      
+      animate();
     };
 
     window.addEventListener("resize", handleResize);

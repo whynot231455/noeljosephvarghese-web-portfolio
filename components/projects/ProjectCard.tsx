@@ -11,7 +11,7 @@ import Image from "next/image";
 
 type Project = ProjectRecord;
 
-export const ProjectCard = ({ project }: { project: Project }) => {
+export const ProjectCard = ({ project, priority = false }: { project: Project; priority?: boolean }) => {
   const { mode } = useMode();
   const tags = Array.isArray(project.tags) ? project.tags : [];
 
@@ -40,6 +40,7 @@ export const ProjectCard = ({ project }: { project: Project }) => {
           src={project.coverImage} 
           alt={project.title}
           fill
+          priority={priority}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className={cn(
             "w-full h-full object-cover transition-all duration-700",

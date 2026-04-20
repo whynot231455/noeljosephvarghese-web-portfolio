@@ -3,6 +3,11 @@ import fs from 'fs';
 import path from 'path';
 import { z } from 'zod';
 
+// ─── Constants ─────────────────────────────────────────────────────────────────
+const CACHE_WEEK = 604800; // 7 days in seconds
+const CACHE_HOUR = 3600;   // 1 hour in seconds
+const CACHE_DURATION = process.env.NODE_ENV === 'production' ? CACHE_WEEK : CACHE_HOUR;
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 type SpotifyPlaylistImage = {
@@ -50,12 +55,20 @@ const normalizedPlaylistSchema = z.object({
 // ─── Disk Cache ───────────────────────────────────────────────────────────────
 // Written on every successful Spotify fetch. Read as fallback on API failure.
 
-const DISK_CACHE_PATH = path.join(process.cwd(), 'content', 'playlists.cache.json');
+const BUNDLED_CACHE_PATH = path.join(process.cwd(), 'content', 'playlists.cache.json');
+const TMP_CACHE_PATH = path.join('/tmp', 'playlists.cache.json');
+
+function seedTmpCacheIfNeeded(): void {
+  if (!fs.existsSync(TMP_CACHE_PATH) && fs.existsSync(BUNDLED_CACHE_PATH)) {
+    fs.copyFileSync(BUNDLED_CACHE_PATH, TMP_CACHE_PATH);
+  }
+}
 
 function readDiskCache(): NormalizedPlaylist[] | null {
   try {
-    if (!fs.existsSync(DISK_CACHE_PATH)) return null;
-    const raw = fs.readFileSync(DISK_CACHE_PATH, 'utf-8');
+    seedTmpCacheIfNeeded();
+    if (!fs.existsSync(TMP_CACHE_PATH)) return null;
+    const raw = fs.readFileSync(TMP_CACHE_PATH, 'utf-8');
     const parsed = JSON.parse(raw);
     return normalizedPlaylistSchema.array().parse(parsed);
   } catch (err) {
@@ -66,7 +79,7 @@ function readDiskCache(): NormalizedPlaylist[] | null {
 
 function writeDiskCache(playlists: NormalizedPlaylist[]): void {
   try {
-    fs.writeFileSync(DISK_CACHE_PATH, JSON.stringify(playlists, null, 2), 'utf-8');
+    fs.writeFileSync(TMP_CACHE_PATH, JSON.stringify(playlists, null, 2), 'utf-8');
   } catch (err) {
     console.warn('[Spotify Cache] Failed to write disk cache:', err);
   }
@@ -144,8 +157,8 @@ async function fetchFromSpotify(allowedIds: string[]): Promise<NormalizedPlaylis
   while (nextUrl) {
     const response = await fetch(nextUrl, {
       headers: { Authorization: `Bearer ${token}` },
-      // Use Next.js Data Cache for 1 hour to handle serverless caching globally
-      next: { revalidate: 3600 },
+      // Use Next.js Data Cache to handle serverless caching globally
+      next: { revalidate: CACHE_DURATION },
     });
 
     if (!response.ok) {
@@ -187,7 +200,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json(
       { items: playlists, total: playlists.length, source: 'spotify-api' },
-      { headers: { 'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=300' } }
+      { headers: { 'Cache-Control': `public, s-maxage=${CACHE_DURATION}, stale-while-revalidate=600` } }
     );
   } catch (err: any) {
     const sanitizeStr = (str: string) => {
@@ -219,3 +232,11 @@ function handleFallback(allowedIds: string[], reason: string) {
     { status: 200, headers: { 'Cache-Control': 'no-store' } }
   );
 }
+
+export const _resetCache = process.env.NODE_ENV === 'test' ? () => {
+  try {
+    if (fs.existsSync(TMP_CACHE_PATH)) {
+      fs.unlinkSync(TMP_CACHE_PATH);
+    }
+  } catch (err) {}
+} : undefined;

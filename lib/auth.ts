@@ -26,10 +26,15 @@ export function verifyDevAuth(request: Request) {
   const expectedPassword = Buffer.from(password);
   const providedPassword = Buffer.from(authHeader);
 
-  let isMatch = false;
-  if (expectedPassword.length === providedPassword.length) {
-    isMatch = crypto.timingSafeEqual(expectedPassword, providedPassword);
-  }
+  const maxLen = Math.max(expectedPassword.length, providedPassword.length);
+  const a = Buffer.alloc(maxLen);
+  const b = Buffer.alloc(maxLen);
+  expectedPassword.copy(a);
+  providedPassword.copy(b);
+
+  const lengthMatch = expectedPassword.length === providedPassword.length;
+  const contentMatch = crypto.timingSafeEqual(a, b);
+  const isMatch = lengthMatch && contentMatch;
 
   if (!isMatch) {
     return { 

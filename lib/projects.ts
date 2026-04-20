@@ -28,8 +28,8 @@ const projectImageSchema = z
   .string()
   .trim()
   .min(1, 'Cover image is required.')
-  .refine((value) => value.startsWith('/projects/'), {
-    message: 'Cover image must point to an uploaded project asset.',
+  .refine((value) => value.startsWith('/projects/') && !value.includes('..'), {
+    message: 'Cover image must point to an uploaded project asset without path traversal sequences.',
   });
 
 export const projectStorageSchema = z.object({
