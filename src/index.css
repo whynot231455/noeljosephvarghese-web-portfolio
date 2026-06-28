@@ -1,0 +1,170 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Anton", sans-serif;
+  --font-mono: "Space Mono", monospace;
+  
+  --color-primary: #004ac6;
+  --color-secondary: #b61722;
+  --color-tertiary: #735c00;
+  --color-neutral-dark: #131b2e;
+  --color-neutral-light: #faf8ff;
+  --color-neutral-muted: #434655;
+  --color-accent-yellow: #ffe083;
+  --color-accent-red: #da3437;
+  --color-accent-green: #00ff00;
+}
+
+@layer utilities {
+  /* CRT Scanline Effect */
+  .scanlines {
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0) 50%,
+      rgba(0, 0, 0, 0.15) 50%,
+      rgba(0, 0, 0, 0.15)
+    );
+    background-size: 100% 4px;
+    pointer-events: none;
+  }
+
+  /* Halftone Overlay Grid */
+  .halftone-overlay {
+    background-image: radial-gradient(circle, #131b2e 1.2px, transparent 1.2px);
+    background-size: 8px 8px;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  /* Blueprint / Grid Overlay */
+  .blueprint-grid {
+    background-image: linear-gradient(rgba(0, 74, 198, 0.07) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(0, 74, 198, 0.07) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+  }
+
+  /* Heavy Neo-Brutalist Border */
+  .brutalist-border {
+    border: 4px solid #131b2e;
+  }
+
+  .brutalist-border-md {
+    border: 2px solid #131b2e;
+  }
+
+  /* Hard-edge offsets */
+  .brutalist-shadow-primary {
+    box-shadow: 6px 6px 0px 0px #004ac6;
+  }
+
+  .brutalist-shadow-dark {
+    box-shadow: 6px 6px 0px 0px #131b2e;
+  }
+
+  .brutalist-shadow-secondary {
+    box-shadow: 6px 6px 0px 0px #b61722;
+  }
+
+  .brutalist-shadow-yellow {
+    box-shadow: 6px 6px 0px 0px #ffe083;
+  }
+
+  .brutalist-shadow-green {
+    box-shadow: 6px 6px 0px 0px #00ff00;
+  }
+
+  .brutalist-shadow-accent-red {
+    box-shadow: 6px 6px 0px 0px #da3437;
+  }
+
+  /* Sticker shadow effect */
+  .sticker-shadow {
+    filter: drop-shadow(4px 4px 0px #131b2e);
+  }
+
+  /* Collage Border shapes */
+  .cutout-border-1 {
+    clip-path: polygon(1% 1%, 99% 0%, 100% 98%, 0% 99%);
+  }
+
+  .cutout-border-2 {
+    clip-path: polygon(0% 2%, 100% 0%, 98% 97%, 2% 100%);
+  }
+
+  .cutout-border-3 {
+    clip-path: polygon(2% 0%, 98% 2%, 97% 98%, 0% 97%);
+  }
+
+  /* VHS distortion look */
+  .vhs-overlay {
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.12) 50%),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.04));
+    background-size: 100% 4px, 6px 100%;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+  }
+
+  /* Text Stroking for large headers */
+  .text-stroke-dark {
+    -webkit-text-stroke: 2px #131b2e;
+    color: transparent;
+  }
+
+  .text-stroke-light {
+    -webkit-text-stroke: 1.5px #faf8ff;
+    color: transparent;
+  }
+}
+
+/* Custom continuous scrolling marquee */
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee-scroll 24s linear infinite;
+}
+
+/* Terminal blink cursor */
+@keyframes terminal-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.cursor-blink {
+  animation: terminal-blink 1s step-end infinite;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 14px;
+}
+::-webkit-scrollbar-track {
+  background: #131b2e;
+  border-left: 4px solid #131b2e;
+}
+::-webkit-scrollbar-thumb {
+  background: #004ac6;
+  border: 3px solid #131b2e;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2563eb;
+}
+
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
