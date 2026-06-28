@@ -5,15 +5,7 @@
   <br />
   <a href="https://noeljosephvarghese.vercel.app">🌐 Live Site</a> &nbsp;·&nbsp;
   <a href="mailto:noeljosephvarghese@gmail.com">✉️ Email</a> &nbsp;·&nbsp;
-  <a href="https://linkedin.com/in/noel-joseph-varghese-576507273">💼 LinkedIn</a> &nbsp;·&nbsp;
-</p>
-
-<p align="center">
-  <img alt="React" src="https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=white" />
-  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5.8-3178C6?style=flat-square&logo=typescript&logoColor=white" />
-  <img alt="Vite" src="https://img.shields.io/badge/Vite-6-646CFF?style=flat-square&logo=vite&logoColor=white" />
-  <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white" />
-  <img alt="Express" src="https://img.shields.io/badge/Express-4-000000?style=flat-square&logo=express&logoColor=white" />
+  <a href="https://linkedin.com/in/noel-joseph-varghese-576507273">💼 LinkedIn</a>
 </p>
 
 ---
