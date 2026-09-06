@@ -1,0 +1,28 @@
+{
+  "id": "jivika-branding",
+  "title": "Jivika Branding & Design System",
+  "category": "DESIGN",
+  "date": "06 // 2026",
+  "imageUrl": "/projects/jivika-branding/cover.png",
+  "description": "A complete brand identity and design system for Jivika — a dual-sided job platform connecting India's blue-collar workforce with verified employers.",
+  "summary": "A complete brand identity for Jivika, a job platform connecting India's blue-collar workforce with verified employers. I created the palette, the Suncoast GROT type system, and 40+ assets spanning Play Store, social, and YouTube. One trusted, multilingual voice across every surface.",
+  "role": "Brand identity & design system",
+  "outcome": "40+ assets, one trusted multilingual brand",
+  "highlights": [
+    "Full identity: palette, Suncoast GROT type system, guidelines",
+    "Play Store + social + YouTube kits in English, Hindi & Tamil",
+    "Myth-vs-Fact carousel + trust banners that convert"
+  ],
+  "tags": ["Brand Identity", "Design System", "Typography System", "Color Palette", "Social Media Design", "App Store Assets"],
+  "tech": ["Figma", "Google Nano Banana", "ChatGPT Images 2.0"],
+  "featured": true,
+  "badge": "BRAND SYSTEM",
+  "link": "https://www.behance.net/gallery/250906651/Jivika-Visual-Assests",
+  "githubUrl": "https://www.behance.net/gallery/250906651/Jivika-Visual-Assests",
+  "order": 7,
+  "stats": [
+    { "label": "Brand Assets", "value": "40+ deliverables" },
+    { "label": "Language Support", "value": "EN / HI / TA" },
+    { "label": "Platform Coverage", "value": "App, Social & Video" }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "id": "web-blocker",
+  "title": "CTRL+BLCK Web Extension",
+  "category": "AI_CODE",
+  "date": "06 // 2026",
+  "imageUrl": "/projects/web-blocker/cover.png",
+  "description": "Designed the CTRL+BLCK Chrome extension — a sleek, distraction-blocking productivity tool with Supabase-powered sync and a clean, focused UI.",
+  "summary": "CTRL+BLCK is a Chrome extension for blocking distracting sites and tracking focused work sessions, with Supabase-powered sync. I designed and built the whole front-end experience from concept to ship. A calm, minimal dashboard keeps the focus on focus.",
+  "role": "Design + front-end build",
+  "outcome": "Concept to shipped product, end-to-end",
+  "highlights": [
+    "Designed and built the extension UI end-to-end",
+    "Supabase-powered sync for blocks and focus sessions",
+    "Clean dashboard that keeps remote pros in flow"
+  ],
+  "tags": ["Chrome Extension", "Productivity", "Supabase Integration", "UI Design", "Front-End Handoff"],
+  "tech": ["Chrome Extension MV3", "Next.js 16", "React 19", "TypeScript", "Tailwind CSS 4", "Supabase", "JavaScript", "HTML", "CSS", "Vercel", "JSZip"],
+  "badge": "PRODUCTIVITY",
+  "link": "https://ctrl-blck.vercel.app/",
+  "githubUrl": "https://github.com/whynot231455/web-blocker",
+  "order": 4,
+  "stats": [
+    { "label": "Extension UI Size", "value": "Lightweight" },
+    { "label": "Backend Integration", "value": "Supabase Realtime" },
+    { "label": "Concept to Ship", "value": "End-to-End" }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "id": "automotive-erp",
+  "title": "Automotive ERP System",
+  "category": "AI_CODE",
+  "date": "04 // 2026",
+  "imageUrl": "/projects/automotive-erp/cover.png",
+  "description": "Transformed fragmented workshop operations into a scalable multi-tenant SaaS architecture MVP.",
+  "summary": "Sol Garage is an end-to-end multi-tenant automotive ERP that brings jobs, staff, and billing into one streamlined system. I scoped the MVP from on-ground operator interviews and locked requirements with interactive wireframes. A strict tenant permission hierarchy keeps every garage's data fully isolated.",
+  "role": "PRDs, UX architecture & delivery",
+  "outcome": "30% less scope creep, zero privilege-escalation flaws",
+  "highlights": [
+    "Scoped the MVP from on-ground operator interviews",
+    "Designed multi-tenant architecture with strict permission hierarchy",
+    "Locked requirements early with interactive functional wireframes"
+  ],
+  "tags": ["Multi-Tenant", "ERP SaaS", "Access Control", "PRDs", "Product Delivery"],
+  "tech": ["Figma", "React", "TypeScript", "Tailwind CSS", "Vite", "Motion", "Recharts"],
+  "featured": true,
+  "badge": "ERP SYSTEM",
+  "link": "https://sol-garage-erp.vercel.app/",
+  "order": 1,
+  "stats": [
+    { "label": "Scope Creep Reduction", "value": "30%" },
+    { "label": "Vulnerability Rate", "value": "0.0%" },
+    { "label": "Operator Adoption", "value": "100% verified" }
+  ]
+}

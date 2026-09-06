@@ -1,0 +1,27 @@
+{
+  "_comment": "HOW TO ADD A PROJECT: copy this file to <your-id>.json (e.g. my-new-app.json), fill in the fields, delete this _comment line. Drop your cover image at public/projects/<your-id>/cover.png and set imageUrl to /projects/<your-id>/cover.png — or paste an https:// image URL. Set order to control gallery position (1 = first). Keep highlights to 3 short bullets and outcome to one line — the modal shows those, not paragraphs. Delete a project's .json to remove it. Run npm run validate:content to check.",
+  "id": "my-new-project",
+  "title": "My New Project",
+  "category": "AI_CODE",
+  "date": "09 // 2026",
+  "imageUrl": "/projects/my-new-project/cover.png",
+  "description": "One-line summary shown on the gallery card (keep under ~140 chars).",
+  "summary": "Two to three lines shown in the project modal — what it is, what you did, what it achieved.",
+  "role": "Your role, e.g. Design + front-end build",
+  "outcome": "One-line result, e.g. 40% faster time-to-insight for execs",
+  "highlights": [
+    "First key point — what you did or decided",
+    "Second key point — how you built or designed it",
+    "Third key point — what it achieved"
+  ],
+  "tags": ["Tag One", "Tag Two"],
+  "tech": ["Figma", "React"],
+  "featured": true,
+  "badge": "NEW",
+  "link": "https://example.com/my-work",
+  "githubUrl": "https://github.com/<you>/<repo>",
+  "order": 9,
+  "stats": [
+    { "label": "Result", "value": "100%" }
+  ]
+}

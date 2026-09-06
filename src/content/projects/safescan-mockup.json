@@ -1,0 +1,28 @@
+{
+  "id": "safescan-mockup",
+  "title": "SafeScan Mobile App Mockup Design",
+  "category": "DESIGN",
+  "date": "06 // 2026",
+  "imageUrl": "https://mir-s3-cdn-cf.behance.net/project_modules/1400/7c7cae250302877.6a1c630994f4d.png",
+  "description": "An AI-powered food safety mobile application that scans ingredients to detect allergens, identify health risks, and recommend smarter food choices.",
+  "summary": "A concept app that scans any ingredient list and flags allergens and health risks before you buy. I designed the end-to-end experience: AI scanning, risk dashboard, alerts, and smarter-swap suggestions. Mint-and-orange visuals with clear Safe / High / Low risk cues.",
+  "role": "UI/UX concept",
+  "outcome": "Scan anything, know what's safe instantly",
+  "highlights": [
+    "AI scan flags allergens + risks with Safe / High / Low cues",
+    "Weekly scan dashboard with urgent risk alerts",
+    "Smarter-swap picks for every flagged product"
+  ],
+  "tags": ["UI/UX Design", "Mobile App", "Food Safety", "AI Scanning", "Allergen Detection"],
+  "tech": ["Figma"],
+  "featured": true,
+  "badge": "UI/UX",
+  "link": "https://www.behance.net/gallery/250302877/SafeScan-Mobile-App-Mockup-Design",
+  "githubUrl": "https://www.behance.net/gallery/250302877/SafeScan-Mobile-App-Mockup-Design",
+  "order": 6,
+  "stats": [
+    { "label": "Risk Levels", "value": "Safe / High / Low" },
+    { "label": "Allergen Coverage", "value": "100+ types" },
+    { "label": "Design Tool", "value": "ChatGPT 2.0" }
+  ]
+}

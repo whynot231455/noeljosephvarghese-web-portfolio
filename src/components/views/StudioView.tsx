@@ -3,6 +3,9 @@ import { Linkedin, Github, Globe, Headphones } from 'lucide-react';
 export default function StudioView() {
   return (
     <div className="relative pt-6">
+
+      <div className="w-full border-t-8 border-dashed border-neutral-dark mb-10"></div>
+
       {/* Social strips */}
       <section className="w-full">
         {/* Social Strips */}

@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowRight, X, ExternalLink } from 'lucide-react';
+import { ArrowRight, X, ExternalLink, TrendingUp, Github } from 'lucide-react';
 import { Project } from '../../types';
-import { PROJECTS } from '../../data';
+import { PROJECTS } from '../../content/loader';
 
 export default function GalleryView() {
   const [filter, setFilter] = useState<'ALL' | 'AI_CODE' | 'DESIGN'>('ALL');
@@ -99,7 +99,17 @@ export default function GalleryView() {
             return (
               <article
                 key={project.id}
-                className="group relative flex h-full flex-col bg-neutral-light border-4 border-neutral-dark brutalist-shadow-dark"
+                onClick={() => setSelectedProject(project)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setSelectedProject(project);
+                  }
+                }}
+                tabIndex={0}
+                role="button"
+                aria-label={`View ${project.title} details`}
+                className="group relative flex h-full flex-col bg-neutral-light border-4 border-neutral-dark brutalist-shadow-dark cursor-pointer hover:-translate-y-1 transition-transform focus:outline-none focus-visible:ring-4 focus-visible:ring-primary"
               >
                 {/* Sticker badge pinned on top right */}
                 {project.badge && (
@@ -137,13 +147,22 @@ export default function GalleryView() {
                     <span className="font-mono text-xs text-neutral-muted tracking-widest">
                       {project.date}
                     </span>
-                    <button
-                      onClick={() => setSelectedProject(project)}
-                      className="font-mono text-xs font-bold text-primary hover:text-accent-red flex items-center gap-1.5 cursor-pointer"
-                    >
-                      View Details
-                      <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                    </button>
+                    <div className="flex items-center gap-3">
+                      {project.githubUrl && (
+                        <a
+                          href={project.githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          onKeyDown={(e) => e.stopPropagation()}
+                          aria-label={`${project.title} ${project.githubUrl.includes('github.com') ? 'GitHub repository' : 'external portfolio page'}`}
+                          className="text-neutral-dark hover:text-primary transition-colors"
+                        >
+                          {project.githubUrl.includes('github.com') ? <Github size={16} /> : <ExternalLink size={16} />}
+                        </a>
+                      )}
+                      <ArrowRight size={14} aria-hidden="true" className="text-primary group-hover:translate-x-1 transition-transform" />
+                    </div>
                   </div>
                 </div>
               </article>
@@ -184,83 +203,120 @@ export default function GalleryView() {
               </div>
 
               {/* Modal Core Layout */}
-              <div className="p-6 md:p-8 max-h-[80vh] overflow-y-auto">
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch">
-                  <div className="col-span-1 md:col-span-12 flex flex-col gap-6">
-                    <div>
+              <div className="p-6 md:p-8 max-h-[70vh] overflow-y-auto">
+                <div className="flex flex-col gap-6">
+                  <div>
+                    <div className="flex flex-wrap items-center gap-2">
                       <span className="font-mono text-[10px] font-bold uppercase bg-neutral-dark text-accent-yellow px-2 py-1">
                         {selectedProject.category.replace('_', ' ')}
                       </span>
-                      <h2 className="font-display text-4xl uppercase tracking-tight text-neutral-dark mt-2 border-b-4 border-neutral-dark pb-2">
-                        {selectedProject.title}
-                      </h2>
-                    </div>
-
-                    <div>
-                      <h4 className="font-mono text-xs font-bold text-neutral-muted uppercase mb-1">
-                        THE CHALLENGE // INTENT
-                      </h4>
-                      <p className="font-sans text-sm text-neutral-dark leading-relaxed">
-                        {selectedProject.longDescription || selectedProject.description}
-                      </p>
-                    </div>
-
-                    {/* Tags / Subcategories */}
-                    <div>
-                      <h4 className="font-mono text-xs font-bold text-neutral-muted uppercase mb-2">
-                        TACTICAL CLASSIFICATIONS
-                      </h4>
-                      <div className="flex flex-wrap gap-2">
-                        {selectedProject.tags.map(tag => (
-                          <span key={tag} className="font-mono text-[10px] font-bold px-2 py-1 bg-neutral-light border-2 border-neutral-dark text-neutral-dark shadow-[1.5px_1.5px_0px_#131b2e]">
-                            #{tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Technologies/Software stack */}
-                    <div>
-                      <h4 className="font-mono text-xs font-bold text-neutral-muted uppercase mb-2">
-                        COMPILER / UTILITY RUNTIME
-                      </h4>
-                      <div className="flex flex-wrap gap-2">
-                        {selectedProject.tech.map(t => {
-                          const rot = (Math.random() * 4 - 2).toFixed(1);
-                          return (
-                            <span 
-                              key={t} 
-                              style={{ transform: `rotate(${rot}deg)` }}
-                              className="font-mono text-xs font-bold px-3 py-1 bg-accent-yellow text-neutral-dark border-2 border-neutral-dark shadow-[2px_2px_0px_#131b2e] inline-block"
-                            >
-                              {t}
-                            </span>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    {/* External links */}
-                    <div className="mt-auto pt-6 border-t-2 border-neutral-dark border-dashed flex justify-end gap-4">
-                      {selectedProject.link && (
-                        <a
-                          href={selectedProject.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="bg-primary text-neutral-light font-mono text-xs font-bold px-4 py-3 border-2 border-neutral-dark hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex items-center gap-1.5 uppercase"
-                        >
-                          CHECK OUT MY WORK <ExternalLink size={12} />
-                        </a>
+                      <span className="font-mono text-[10px] font-bold uppercase text-neutral-muted">
+                        {selectedProject.date}
+                      </span>
+                      {selectedProject.role && (
+                        <span className="font-mono text-[10px] font-bold uppercase text-neutral-muted border-l-2 border-neutral-dark/20 pl-2">
+                          {selectedProject.role}
+                        </span>
                       )}
-                      <button
-                        onClick={() => setSelectedProject(null)}
-                        className="bg-neutral-dark text-neutral-light font-mono text-xs font-bold px-4 py-3 border-2 border-neutral-dark hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all uppercase cursor-pointer"
-                      >
-                        RETURN TO ARCHIVE
-                      </button>
+                    </div>
+                    <h2 className="font-display text-4xl uppercase tracking-tight text-neutral-dark mt-2 border-b-4 border-neutral-dark pb-2">
+                      {selectedProject.title}
+                    </h2>
+                  </div>
+
+                  {/* Outcome banner */}
+                  {selectedProject.outcome && (
+                    <div className="flex items-center gap-3 bg-primary text-neutral-light px-4 py-3 border-2 border-neutral-dark">
+                      <TrendingUp size={20} className="shrink-0" />
+                      <div>
+                        <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-accent-yellow block">
+                          Outcome
+                        </span>
+                        <span className="font-display text-xl uppercase tracking-tight">
+                          {selectedProject.outcome}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Highlights */}
+                  {selectedProject.highlights && selectedProject.highlights.length > 0 && (
+                    <div>
+                      {selectedProject.highlights.slice(0, 3).map((h, i) => (
+                        <div key={i} className="flex items-baseline gap-4 py-3 border-b-2 border-dashed border-neutral-dark/30 last:border-b-0 first:pt-0">
+                          <span className="font-display text-3xl text-accent-red shrink-0">
+                            {String(i + 1).padStart(2, '0')}
+                          </span>
+                          <p className="font-sans text-sm font-bold text-neutral-dark leading-snug">
+                            {h}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Description */}
+                  <p className="font-sans text-sm text-neutral-dark leading-relaxed border-l-4 border-accent-red pl-3">
+                    {selectedProject.summary || selectedProject.description}
+                  </p>
+
+                  {/* Stack / Tags */}
+                  <div>
+                    <h4 className="font-mono text-xs font-bold text-neutral-muted uppercase mb-2">
+                      Stack // Tags
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {[...selectedProject.tech.map(t => ({ label: t, tech: true })), ...selectedProject.tags.map(t => ({ label: `#${t}`, tech: false }))].slice(0, 8).map((item, idx) => (
+                        <span
+                          key={item.label}
+                          style={{ transform: `rotate(${[-1.5, 1, -0.5, 1.5, 0][idx % 5]}deg)` }}
+                          className={item.tech
+                            ? "font-mono text-xs font-bold px-3 py-1 bg-accent-yellow text-neutral-dark border-2 border-neutral-dark shadow-[2px_2px_0px_#131b2e] inline-block"
+                            : "font-mono text-[10px] font-bold px-2 py-1 bg-neutral-light border-2 border-neutral-dark text-neutral-dark shadow-[1.5px_1.5px_0px_#131b2e]"}
+                        >
+                          {item.label}
+                        </span>
+                      ))}
+                      {(selectedProject.tech.length + selectedProject.tags.length) > 8 && (
+                        <span className="font-mono text-[10px] font-bold px-2 py-1 text-neutral-muted">
+                          +{selectedProject.tech.length + selectedProject.tags.length - 8} more
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>
+              </div>
+
+              {/* Sticky footer */}
+              <div className="border-t-4 border-neutral-dark px-6 py-4 bg-neutral-light flex justify-end items-center gap-3">
+                {selectedProject.link && (
+                  <a
+                    href={selectedProject.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-primary text-neutral-light font-mono text-xs font-bold px-4 py-3 border-2 border-neutral-dark shadow-[3px_3px_0px_#131b2e] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex items-center gap-1.5 uppercase"
+                  >
+                    CHECK OUT MY WORK <ExternalLink size={12} />
+                  </a>
+                )}
+                {selectedProject.githubUrl && selectedProject.githubUrl !== selectedProject.link && (
+                  <a
+                    href={selectedProject.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${selectedProject.title} GitHub repository`}
+                    className="bg-neutral-light text-neutral-dark p-3 border-2 border-neutral-dark shadow-[3px_3px_0px_#131b2e] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none hover:text-primary transition-all"
+                  >
+                    <Github size={16} />
+                  </a>
+                )}
+                <button
+                  onClick={() => setSelectedProject(null)}
+                  aria-label="Close project details"
+                  className="bg-neutral-dark text-neutral-light p-3 border-2 border-neutral-dark hover:bg-accent-red transition-colors cursor-pointer"
+                >
+                  <X size={16} />
+                </button>
               </div>
             </motion.div>
           </motion.div>

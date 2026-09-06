@@ -28,10 +28,7 @@ export default function AboutView({ onNavigate }: AboutViewProps) {
                 Noel Joseph
               </span>
               <span className="block text-6xl sm:text-7xl md:text-8xl text-primary drop-shadow-[4px_4px_0px_#131b2e] -rotate-1 origin-left mt-2">
-                Varghese:
-              </span>
-              <span className="block text-3xl sm:text-4xl md:text-5xl bg-neutral-dark text-neutral-light px-4 py-3 border-4 border-neutral-light brutalist-shadow-primary inline-block mt-4 rotate-1 max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
-                Building for Fun
+                Varghese
               </span>
             </h1>
           </motion.div>

@@ -12,12 +12,18 @@ export interface Project {
   date: string;
   imageUrl: string;
   description: string;
+  summary?: string;
   longDescription?: string;
+  highlights?: string[];
+  outcome?: string;
+  role?: string;
   tags: string[];
   tech: string[];
   featured?: boolean;
   link?: string;
+  githubUrl?: string;
   badge?: string;
+  order?: number;
   stats?: { label: string; value: string }[];
 }
 

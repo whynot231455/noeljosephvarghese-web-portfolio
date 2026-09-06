@@ -1,0 +1,28 @@
+{
+  "id": "mmm-dashboard",
+  "title": "MMM Analytics Dashboard",
+  "category": "AI_CODE",
+  "date": "02 // 2026",
+  "imageUrl": "/projects/mmm-dashboard/cover.png",
+  "description": "Intuitive corporate visualization layer translating advanced Marketing Mix Modeling and predictive AI outputs.",
+  "summary": "A corporate analytics dashboard that turns Marketing Mix Modeling and predictive AI outputs into tools non-technical executives actually use. I owned the UX end-to-end — KPI hierarchies, visualization patterns, and information architecture. Built in sprints alongside ML engineers and deployed on Vercel.",
+  "role": "UX, data viz & delivery",
+  "outcome": "40% faster time-to-insight for execs",
+  "highlights": [
+    "Turned MMM + predictive ML outputs into exec-friendly visual tools",
+    "Built the KPI hierarchy and information architecture end-to-end",
+    "Shipped on time with ML engineering, zero handoff defects"
+  ],
+  "tags": ["Marketing Mix Modeling", "Predictive Analytics", "Data Visualization", "KPI Hierarchy", "Vercel Deployment"],
+  "tech": ["React 19", "TypeScript", "Vite 7", "Tailwind CSS 4", "Express 5", "Supabase", "Recharts", "Zustand", "Lucide React", "PapaParse", "Axios", "idb-keyval", "Sonner", "Dataiku DSS", "Gemini AI", "Meta Graph API", "Python", "PostgreSQL", "Vitest"],
+  "featured": true,
+  "badge": "ANALYTICS",
+  "link": "https://mmm-sol-dashboard-829j8q7ip-whynot231455s-projects.vercel.app/",
+  "githubUrl": "https://github.com/whynot231455/mmm-sol-dashboard",
+  "order": 2,
+  "stats": [
+    { "label": "Time-to-Insight Red.", "value": "40%" },
+    { "label": "Deployment Stability", "value": "99.9%" },
+    { "label": "Client Handoff Defect", "value": "0%" }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "id": "tripssecure-brand",
+  "title": "Tripssecure Website Design",
+  "category": "DESIGN",
+  "date": "05 // 2025",
+  "imageUrl": "/projects/tripssecure-brand/cover.png",
+  "description": "Designed a high-impact travel ancillary website with responsive UI, brand identity system, and clear information architecture for the Asia, Africa, and Middle East market.",
+  "summary": "A high-impact travel website plus a complete brand identity system for the Asia, Africa, and Middle East market. I built the design system from scratch — typography tokens, colour, components, and interaction patterns. Clearer navigation and consistent branding lifted engagement across web and mobile.",
+  "role": "Brand + website design",
+  "outcome": "One design language across web, mobile & marketing",
+  "highlights": [
+    "Built the design system from zero: type tokens, colour, components",
+    "Rebuilt IA + navigation for Asia, Africa & Middle East travellers",
+    "Shipped a full site driving deeper engagement per session"
+  ],
+  "tags": ["UI/UX Design", "Website Design", "Information Architecture", "Brand Identity", "Travel Ancillary"],
+  "tech": ["Figma", "Adobe Photoshop", "React"],
+  "featured": true,
+  "badge": "DESIGN SYSTEM",
+  "link": "https://www.figma.com/proto/OryYKib7f2D4dWnQ0BXVlN/tripssecure-website?page-id=0%3A1&node-id=293-178&starting-point-node-id=293%3A178&t=SyBhwERguJpZ4YbH-1",
+  "order": 3,
+  "stats": [
+    { "label": "Typography Tokens", "value": "Global Scale" },
+    { "label": "Interaction Patterns", "value": "25+ custom UI" },
+    { "label": "Responsive Surfaces", "value": "Web & Mobile" }
+  ]
+}

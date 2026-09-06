@@ -1,0 +1,28 @@
+{
+  "id": "hybrid-agentic-rag",
+  "title": "Hybrid Agentic RAG",
+  "category": "AI_CODE",
+  "date": "07 // 2026",
+  "imageUrl": "/projects/hybrid-agentic-rag/cover.png",
+  "description": "A deployable hybrid retrieval-augmented generation system combining BM25 lexical search with semantic dense embeddings fused via Reciprocal Rank Fusion.",
+  "summary": "A production-ready RAG system that fuses BM25 keyword search with dense vector search for grounded, cited answers. I built the LangGraph agent pipeline, a streaming FastAPI chat UI, and one-command Docker Compose deployment. Runs locally on Ollama or in the cloud via Groq, OpenRouter, or OpenAI.",
+  "role": "Architecture + full-stack build",
+  "outcome": "Grounded answers with citations, one-command deploy",
+  "highlights": [
+    "Hybrid retrieval: BM25 + dense embeddings fused with RRF",
+    "Agentic pipeline with streaming chat + chunk citations",
+    "Runs local on Ollama or cloud via Groq / OpenRouter / OpenAI"
+  ],
+  "tags": ["Hybrid Retrieval", "RAG", "BM25 + Dense Embeddings", "Agentic Pipeline", "LangGraph", "ChromaDB", "Reciprocal Rank Fusion"],
+  "tech": ["Python", "FastAPI", "LangChain", "LangGraph", "ChromaDB", "BM25 Okapi", "Ollama", "Docker Compose", "Tailwind CSS", "Groq"],
+  "featured": true,
+  "badge": "RAG SYSTEM",
+  "link": "https://github.com/whynot231455/hybrid-agentic-rag",
+  "githubUrl": "https://github.com/whynot231455/hybrid-agentic-rag",
+  "order": 8,
+  "stats": [
+    { "label": "Retrieval Signals", "value": "BM25 + Dense" },
+    { "label": "Fusion Method", "value": "RRF" },
+    { "label": "Deployment", "value": "Docker Compose" }
+  ]
+}

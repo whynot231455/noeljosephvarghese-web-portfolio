@@ -1,0 +1,28 @@
+{
+  "id": "sproutplus-mockup",
+  "title": "SproutPlus App Mockup Design",
+  "category": "DESIGN",
+  "date": "06 // 2026",
+  "imageUrl": "https://mir-s3-cdn-cf.behance.net/project_modules/1400/408178250502839.6a208bb65174f.png",
+  "description": "A conceptual mobile application design for frictionless surplus food redistribution, connecting donors with receivers to reduce waste and build community impact.",
+  "summary": "A concept app for redirecting surplus food to people who need it — donors post extra food, receivers claim it nearby. I designed the full flow: dual onboarding, impact tracking, hub discovery, and category browsing. A warm green identity keeps the mission front and center.",
+  "role": "UI/UX concept",
+  "outcome": "A dignity-first concept for zero food waste",
+  "highlights": [
+    "Dual onboarding for donors and receivers",
+    "Impact tracking: CO₂ saved, meals provided",
+    "Hub discovery + category browsing in one flow"
+  ],
+  "tags": ["UI/UX Design", "Mobile App", "Food Rescue", "Social Impact", "Brand Identity"],
+  "tech": ["Figma"],
+  "featured": true,
+  "badge": "UI/UX",
+  "link": "https://www.behance.net/gallery/250502839/SproutPlus-App-Mockup-Design",
+  "githubUrl": "https://www.behance.net/gallery/250502839/SproutPlus-App-Mockup-Design",
+  "order": 5,
+  "stats": [
+    { "label": "User Personas", "value": "Donor & Receiver" },
+    { "label": "Key Screens", "value": "Onboarding & Home" },
+    { "label": "Design Tool", "value": "ChatGPT 2.0" }
+  ]
+}
